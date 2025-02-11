@@ -81,7 +81,7 @@ class OverkizConfigFlow(ConfigFlow, domain=DOMAIN):
         if gateways := await client.get_gateways():
             for gateway in gateways:
                 if is_overkiz_gateway(gateway.id):
-                    await self.async_set_unique_id(gateway.id, raise_on_progress=False)
+                    await self.async_set_unique_id(f"{gateway.id}-{self._api_type}", raise_on_progress=False)
                     break
 
         return user_input
@@ -330,9 +330,9 @@ class OverkizConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def _process_discovery(self, gateway_id: str) -> ConfigFlowResult:
         """Handle discovery of a gateway."""
-        await self.async_set_unique_id(gateway_id)
+        await self.async_set_unique_id(f"{gateway_id}-{self._api_type}")
         self._abort_if_unique_id_configured()
-        self.context["title_placeholders"] = {"gateway_id": gateway_id}
+        self.context["title_placeholders"] = {"gateway_id": f"{gateway_id}-{self._api_type}"}
 
         return await self.async_step_user()
 
