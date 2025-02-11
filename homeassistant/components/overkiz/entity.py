@@ -35,7 +35,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
         self.executor = OverkizExecutor(device_url, coordinator)
 
         self._attr_assumed_state = not self.device.states
-        self._attr_unique_id = self.device.device_url
+        self._attr_unique_id = f"{self.device.device_url}-{self.coordinator.client.api_type.value}"
 
         if self.is_sub_device:
             # In case of sub entity, use the provided label as name
@@ -67,7 +67,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
             # Only return the url of the base device, to inherit device name
             # and model from parent device.
             return DeviceInfo(
-                identifiers={(DOMAIN, self.executor.base_device_url)},
+                identifiers={(DOMAIN, self.executor.base_device_url, self.coordinator.client.api_type.value)},
             )
 
         manufacturer = (
@@ -92,7 +92,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
         )
 
         return DeviceInfo(
-            identifiers={(DOMAIN, self.executor.base_device_url)},
+            identifiers={(DOMAIN, self.executor.base_device_url, self.coordinator.client.api_type.value)},
             name=self.device.label,
             manufacturer=str(manufacturer),
             model=str(model),
@@ -102,7 +102,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
             ),
             hw_version=self.device.controllable_name,
             suggested_area=suggested_area,
-            via_device=(DOMAIN, self.executor.get_gateway_id()),
+            via_device=(DOMAIN, self.executor.get_gateway_id(), self.coordinator.client.api_type.value),
             configuration_url=self.coordinator.client.server.configuration_url,
         )
 
