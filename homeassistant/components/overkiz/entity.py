@@ -31,7 +31,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
         self.executor = OverkizExecutor(device_url, coordinator)
 
         self._attr_assumed_state = not self.device.states
-        self._attr_unique_id = self.device.device_url
+        self._attr_unique_id = f"{self.device.device_url}-{self.coordinator.client.server_config.api_type.value}"
 
         if self.device.identifier.is_sub_device:
             # In case of sub entity, use the provided label as name
@@ -78,7 +78,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
             # Only return the url of the base device, to inherit device name
             # and model from parent device.
             return DeviceInfo(
-                identifiers={(DOMAIN, self.device.identifier.base_device_url)},
+                identifiers={(DOMAIN, self.device.identifier.base_device_url, self.coordinator.client.server_config.api_type.value)},
             )
 
         manufacturer = (
@@ -105,7 +105,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
         )
 
         return DeviceInfo(
-            identifiers={(DOMAIN, self.device.identifier.base_device_url)},
+            identifiers={(DOMAIN, self.device.identifier.base_device_url, self.coordinator.client.server_config.api_type.value)},
             name=self.device.label,
             manufacturer=str(manufacturer),
             model=str(model),
@@ -120,7 +120,7 @@ class OverkizEntity(CoordinatorEntity[OverkizDataUpdateCoordinator]):
             suggested_area=suggested_area,
             via_device_id=dr.async_get_device_id_by_identifier(
                 self.coordinator.hass,
-                (DOMAIN, self.device.identifier.gateway_id),
+                (DOMAIN, self.device.identifier.gateway_id, self.coordinator.client.server_config.api_type.value),
                 config_entry_id=self.coordinator.config_entry.entry_id,
             ),
             configuration_url=self.coordinator.client.server_config.configuration_url,
