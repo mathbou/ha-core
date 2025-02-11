@@ -198,7 +198,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: OverkizDataConfigEntry) 
     for gateway in setup.gateways:
         device_registry.async_get_or_create(
             config_entry_id=entry.entry_id,
-            identifiers={(DOMAIN, gateway.id)},
+            identifiers={(DOMAIN, gateway.id, client.server_config.api_type.value)},
             model=gateway.type.beautify_name if gateway.type else None,
             model_id=str(gateway.type),
             manufacturer=client.server_config.manufacturer,

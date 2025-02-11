@@ -214,7 +214,7 @@ async def on_device_removed(
     registry = dr.async_get(coordinator.hass)
 
     if registered_device := registry.async_get_device_by_identifier(
-        (DOMAIN, base_device_url), coordinator.config_entry.entry_id
+        (DOMAIN, base_device_url, coordinator.client.server_config.api_type.value), coordinator.config_entry.entry_id
     ):
         registry.async_remove_device(registered_device.id)
 

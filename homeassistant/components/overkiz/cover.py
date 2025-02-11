@@ -575,7 +575,7 @@ class OverkizCover(OverkizDescriptiveEntity, CoverEntity):
         super().__init__(device_url, coordinator, description)
 
         # Use device url as unique ID for backwards compatibility
-        self._attr_unique_id = self.device.device_url
+        self._attr_unique_id = f"{self.device.device_url}-{self.coordinator.client.server_config.api_type.value}"
 
         # Overkiz does support covers where only tilt commands are supported
         # and HA sets by default open/close as supported feature which conflicts
