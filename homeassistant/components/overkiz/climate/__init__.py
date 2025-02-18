@@ -31,6 +31,7 @@ from .hitachi_air_to_air_heat_pump_ovp import HitachiAirToAirHeatPumpOVP
 from .hitachi_air_to_water_heating_zone import HitachiAirToWaterHeatingZone
 from .somfy_heating_temperature_interface import SomfyHeatingTemperatureInterface
 from .somfy_thermostat import SomfyThermostat
+from .thermostat_heating_temperature_interface import ThermostatHeatingTemperatureInterface
 from .valve_heating_temperature_interface import ValveHeatingTemperatureInterface
 
 
@@ -56,6 +57,7 @@ WIDGET_TO_CLIMATE_ENTITY = {
     UIWidget.HITACHI_AIR_TO_WATER_HEATING_ZONE: HitachiAirToWaterHeatingZone,
     UIWidget.EVO_HOME_CONTROLLER: EvoHomeController,
     UIWidget.SOMFY_HEATING_TEMPERATURE_INTERFACE: SomfyHeatingTemperatureInterface,
+    UIWidget.THERMOSTAT_HEATING_TEMPERATURE_INTERFACE: ThermostatHeatingTemperatureInterface,
     UIWidget.SOMFY_THERMOSTAT: SomfyThermostat,
     UIWidget.VALVE_HEATING_TEMPERATURE_INTERFACE: ValveHeatingTemperatureInterface,
     UIWidget.ATLANTIC_PASS_APC_HEAT_PUMP: AtlanticPassAPCHeatPumpMainComponent,
