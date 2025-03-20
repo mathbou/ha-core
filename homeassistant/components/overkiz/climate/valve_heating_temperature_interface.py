@@ -76,9 +76,10 @@ class ValveHeatingTemperatureInterface(OverkizEntity, ClimateEntity):
     @property
     def hvac_action(self) -> HVACAction:
         """Return the current running hvac operation."""
-        return OVERKIZ_TO_HVAC_ACTION[
-            cast(str, self.executor.select_state(OverkizState.CORE_OPEN_CLOSED_VALVE))
-        ]
+        if current_operation := self.executor.select_state(OverkizState.CORE_OPEN_CLOSED_VALVE):
+            return OVERKIZ_TO_HVAC_ACTION[
+                cast(str, current_operation)
+            ]
 
     @property
     def target_temperature(self) -> float:
@@ -114,11 +115,12 @@ class ValveHeatingTemperatureInterface(OverkizEntity, ClimateEntity):
     @property
     def preset_mode(self) -> str:
         """Return the current preset mode, e.g., home, away, temp."""
-        return OVERKIZ_TO_PRESET_MODE[
-            cast(
-                str, self.executor.select_state(OverkizState.IO_DEROGATION_HEATING_MODE)
-            )
-        ]
+        if preset := self.executor.select_state(OverkizState.IO_DEROGATION_HEATING_MODE):
+            return OVERKIZ_TO_PRESET_MODE[
+                cast(
+                    str, preset
+                )
+            ]
 
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         """Set new preset mode."""
