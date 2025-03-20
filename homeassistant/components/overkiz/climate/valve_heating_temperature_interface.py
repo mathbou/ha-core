@@ -122,12 +122,12 @@ class ValveHeatingTemperatureInterface(OverkizEntity, ClimateEntity):
     @override
     def preset_mode(self) -> str:
         """Return the current preset mode, e.g., home, away, temp."""
-        return OVERKIZ_TO_PRESET_MODE[
-            cast(
-                str,
-                self.device.states.get_value(OverkizState.IO_DEROGATION_HEATING_MODE),
-            )
-        ]
+        if preset := self.device.states.get_value(OverkizState.IO_DEROGATION_HEATING_MODE):
+            return OVERKIZ_TO_PRESET_MODE[
+                cast(
+                    str, preset
+                )
+            ]
 
     @override
     async def async_set_preset_mode(self, preset_mode: str) -> None:
